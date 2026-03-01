@@ -122,3 +122,77 @@ export function useResetClassifications() {
     },
   });
 }
+
+// Notification Drafts Hooks
+
+export function useNotificationDrafts() {
+  return useQuery({
+    queryKey: ["notification-drafts"],
+    queryFn: async () => {
+      const res = await fetch("/api/mail/notifications");
+      if (!res.ok) throw new Error("Failed to fetch drafts");
+      return res.json();
+    },
+  });
+}
+
+export function useGenerateNotifications() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: { deceasedName: string; senderName: string }) => {
+      const res = await fetch("/api/mail/notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error || "Failed to generate notifications");
+      }
+      return json;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notification-drafts"] });
+    },
+  });
+}
+
+export function useUpdateDraft() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: {
+      draftId: string;
+      status?: "draft" | "approved" | "sent" | "skipped";
+      subject?: string;
+      body?: string;
+    }) => {
+      const res = await fetch("/api/mail/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Failed to update draft");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notification-drafts"] });
+    },
+  });
+}
+
+export function useSendApprovedNotifications() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const res = await fetch("/api/mail/notifications", { method: "PUT" });
+      if (!res.ok) throw new Error("Failed to send notifications");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notification-drafts"] });
+    },
+  });
+}

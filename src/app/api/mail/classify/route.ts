@@ -8,6 +8,10 @@ import {
   resetClassifications,
   DEFAULT_CATEGORIES,
 } from "@/lib/classifier";
+import {
+  composeNotificationEmails,
+  saveNotificationDrafts,
+} from "@/lib/agents/notification-composer";
 
 export async function POST(request: NextRequest) {
   const session = await auth();
@@ -19,6 +23,9 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const categories = body.categories || DEFAULT_CATEGORIES;
   const batchSize = body.batchSize || 25;
+  const generateNotifications = body.generateNotifications || false;
+  const deceasedName = body.deceasedName;
+  const senderName = body.senderName;
 
   // Get dossiers
   const { batches, totalContacts } = await getDossiersForClassification(
@@ -37,11 +44,38 @@ export async function POST(request: NextRequest) {
     batchSize
   );
 
+  // Optionally generate notification drafts at end of workflow
+  let notificationResult = null;
+  if (generateNotifications && deceasedName && senderName) {
+    const notifications = await composeNotificationEmails(
+      session.user.id,
+      deceasedName,
+      senderName,
+      allDossiers
+    );
+    const saved = await saveNotificationDrafts(
+      session.user.id,
+      notifications.drafts
+    );
+    notificationResult = {
+      draftsGenerated: notifications.drafts.length,
+      draftsSaved: saved,
+      byGroup: Object.fromEntries(
+        Object.entries(notifications.byGroup).map(([group, drafts]) => [
+          group,
+          drafts.length,
+        ])
+      ),
+      errors: notifications.errors,
+    };
+  }
+
   return NextResponse.json({
     success: result.errors.length === 0,
     classified: result.results.length,
     updated: result.updated,
     errors: result.errors,
+    notifications: notificationResult,
   });
 }
 

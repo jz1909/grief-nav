@@ -97,3 +97,22 @@ model Contact {
   @@index([userId])
   @@index([domain])
 }
+
+model NotificationDraft {
+  id        String   @id @default(cuid())
+  userId    String
+  contactId String
+  email     String
+  group     String
+  subject   String
+  body      String
+  tone      String
+  status    String   @default("draft") // draft, approved, sent, skipped
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sentAt    DateTime?
+
+  @@unique([userId, contactId])
+  @@index([userId])
+  @@index([status])
+}
