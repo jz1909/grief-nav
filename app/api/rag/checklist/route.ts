@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "../prisma";
-import { retrieve } from "@/lib/rag/retriever";
+import { retrieve } from "../../../../../lib/rag/retriever";
 import {
   checklistSystemPrompt,
   checklistUserPrompt,
-} from "@/lib/rag/prompts";
-import type { DeceasedProfileInput } from "@/lib/rag/types";
+} from "../../../../../lib/rag/prompts";
+import type { DeceasedProfileInput } from "../../../../../lib/rag/types";
 
 const anthropic = new Anthropic();
 

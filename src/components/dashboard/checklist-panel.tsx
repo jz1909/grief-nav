@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type { ChecklistItem } from "@/src/hooks/use-checklist";
+import type { ChecklistItem } from "@/hooks/use-checklist";
 
 const CATEGORIES = [
   { key: "probate", label: "Probate" },

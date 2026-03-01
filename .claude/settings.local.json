@@ -3,7 +3,20 @@
     "allow": [
       "Bash(npm ls:*)",
       "Bash(npm run build:*)",
-      "Bash(cd /c/Users/guowi/grief-nav && npx tsc --noEmit --pretty false 2>&1 | grep \"lib/rag\")"
+      "Bash(cd /c/Users/guowi/grief-nav && npx tsc --noEmit --pretty false 2>&1 | grep \"lib/rag\")",
+      "Bash(cat:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(rmdir:*)",
+      "Bash(taskkill:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(powershell -Command \"Stop-Process -Id 72592 -Force\")",
+      "Bash(powershell:*)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npx shadcn@latest add:*)"
     ]
   }
 }

@@ -2,7 +2,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { PrismaClient } from "@/lib/generated/prisma/client";
+import { PrismaClient } from "../generated/prisma/client";
 import Anthropic from "@anthropic-ai/sdk";
 import { retrieve } from "./retriever";
 import {

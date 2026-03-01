@@ -1,8 +1,8 @@
 "use client";
 
-import { DashboardChatClient } from "@/src/components/dashboard/dashboard-chat-client";
-import { ChecklistPanel } from "@/src/components/dashboard/checklist-panel";
-import { useChecklist } from "@/src/hooks/use-checklist";
+import { DashboardChatClient } from "@/components/dashboard/dashboard-chat-client";
+import { ChecklistPanel } from "@/components/dashboard/checklist-panel";
+import { useChecklist } from "@/hooks/use-checklist";
 
 const TEST_PROFILE_ID = "test-profile-id";
 
