@@ -1,57 +1,37 @@
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SignOutButton } from "@/components/sign-out-button";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+"use client";
 
-export default async function DashboardPage() {
-  const session = await auth();
+import { DashboardChatClient } from "@/components/dashboard/dashboard-chat-client";
+import { ChecklistPanel } from "@/components/dashboard/checklist-panel";
+import { useChecklist } from "@/hooks/use-checklist";
 
-  if (!session?.user) {
-    redirect("/auth/signin");
-  }
+const TEST_PROFILE_ID = "test-profile-id";
+
+/**
+ * Client Component entry point for /dashboard.
+ * Renders a two-panel split: dashboard content on the left, AI chat on the right.
+ */
+export default function DashboardPage() {
+  const { items, isLoading } = useChecklist(TEST_PROFILE_ID);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Alongside</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-gray-600">{session.user.email}</span>
-          <SignOutButton />
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto p-6 space-y-6">
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Welcome Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Welcome back</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                Alongside helps you manage communications during difficult times.
-                All actions require your explicit approval.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Tools Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Tools</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Link href="/mailautomation">
-                <Button className="w-full">Mail Automation</Button>
-              </Link>
-            </CardContent>
-          </Card>
+    <div className="flex h-screen flex-col lg:flex-row">
+      {/* Left panel: dashboard content — scrollable */}
+      <main className="flex-1 overflow-y-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+            <p className="text-muted-foreground mt-1">
+              Track your progress through the notification pipeline.
+            </p>
+          </div>
+          <ChecklistPanel items={items} isLoading={isLoading} />
         </div>
       </main>
+
+      {/* Right panel: AI chat — fixed height, scrolls internally */}
+      <aside className="h-[50vh] w-full border-t lg:h-screen lg:w-[440px] lg:min-w-[380px] lg:max-w-[480px] lg:border-t-0 lg:border-l">
+        <DashboardChatClient />
+      </aside>
     </div>
   );
 }

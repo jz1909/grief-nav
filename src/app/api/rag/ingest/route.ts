@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../prisma";
-import { ingestDocument } from "@/lib/rag/embeddings";
+import { ingestDocument } from "../../../../lib/rag/embeddings";
 
 export async function POST(request: NextRequest) {
   try {

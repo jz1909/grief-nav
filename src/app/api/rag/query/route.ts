@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "../prisma";
-import { retrieve } from "@/lib/rag/retriever";
+import { retrieve } from "../../../../../lib/rag/retriever";
 import {
   documentAssistantSystemPrompt,
   documentAssistantUserPrompt,
-} from "@/lib/rag/prompts";
+} from "../../../../../lib/rag/prompts";
 
 const anthropic = new Anthropic();
 

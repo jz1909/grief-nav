@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useChat } from "@/src/hooks/use-chat";
+import { useChat } from "@/hooks/use-chat";
 
 // Hardcoded for testing — will be made dynamic later
 const TEST_PROFILE_ID = "test-profile-id";
