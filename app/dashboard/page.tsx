@@ -1,17 +1,18 @@
-import type { Metadata } from "next";
-import { DashboardClient } from "@/components/dashboard/dashboard-client";
-import { DashboardChatClient } from "@/components/dashboard/dashboard-chat-client";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Dashboard — DeathGPT",
-  description: "Overview of your mail automation pipeline and contact stats.",
-};
+import { DashboardChatClient } from "@/src/components/dashboard/dashboard-chat-client";
+import { ChecklistPanel } from "@/src/components/dashboard/checklist-panel";
+import { useChecklist } from "@/src/hooks/use-checklist";
+
+const TEST_PROFILE_ID = "test-profile-id";
 
 /**
- * Server Component entry point for /dashboard.
+ * Client Component entry point for /dashboard.
  * Renders a two-panel split: dashboard content on the left, AI chat on the right.
  */
 export default function DashboardPage() {
+  const { items, isLoading } = useChecklist(TEST_PROFILE_ID);
+
   return (
     <div className="flex h-screen flex-col lg:flex-row">
       {/* Left panel: dashboard content — scrollable */}
@@ -23,7 +24,7 @@ export default function DashboardPage() {
               Track your progress through the notification pipeline.
             </p>
           </div>
-          <DashboardClient />
+          <ChecklistPanel items={items} isLoading={isLoading} />
         </div>
       </main>
 

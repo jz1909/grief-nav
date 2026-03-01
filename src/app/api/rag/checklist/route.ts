@@ -17,6 +17,32 @@ interface ChecklistItemFromAI {
   priority: string;
 }
 
+export async function GET(request: NextRequest) {
+  try {
+    const profileId = request.nextUrl.searchParams.get("profile_id");
+
+    if (!profileId) {
+      return NextResponse.json(
+        { error: "profile_id query parameter is required" },
+        { status: 400 },
+      );
+    }
+
+    const items = await prisma.checklistItem.findMany({
+      where: { deceased_profile_id: profileId },
+      orderBy: { created_at: "asc" },
+    });
+
+    return NextResponse.json({ profile_id: profileId, checklist: items });
+  } catch (error) {
+    console.error("Checklist fetch error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch checklist" },
+      { status: 500 },
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
