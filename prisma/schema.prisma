@@ -9,3 +9,42 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+model DocumentChunk {
+  id            String   @id @default(cuid())
+  source_file   String
+  section_title String?
+  content       String
+  embedding     String   // JSON string of float array
+  token_count   Int
+  metadata      String?  // JSON string
+  created_at    DateTime @default(now())
+}
+
+model DeceasedProfile {
+  id                      String          @id @default(cuid())
+  full_name               String
+  date_of_death           DateTime
+  state                   String
+  marital_status          String
+  has_children            Boolean
+  has_property            Boolean
+  has_retirement_accounts Boolean
+  has_life_insurance      Boolean
+  additional_info         String?
+  created_at              DateTime        @default(now())
+  checklist_items         ChecklistItem[]
+}
+
+model ChecklistItem {
+  id                  String          @id @default(cuid())
+  deceased_profile_id String
+  deceased_profile    DeceasedProfile @relation(fields: [deceased_profile_id], references: [id])
+  title               String
+  description         String?
+  category            String          // "probate" | "financial" | "government" | "insurance"
+  priority            String          // "high" | "medium" | "low"
+  status              String          @default("pending") // "pending" | "in_progress" | "complete"
+  document_url        String?
+  created_at          DateTime        @default(now())
+}

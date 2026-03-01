@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm ls:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(cd /c/Users/guowi/grief-nav && npx tsc --noEmit --pretty false 2>&1 | grep \"lib/rag\")"
     ]
   }
 }
