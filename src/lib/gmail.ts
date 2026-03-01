@@ -19,11 +19,11 @@ export async function importGmailMessages(userId: string): Promise<ImportResult>
 
   const gmail = google.gmail({ version: "v1", auth: oauth2Client });
 
-  // Get emails from last 90 days
-  const ninetyDaysAgo = Math.floor(
-    (Date.now() - 90 * 24 * 60 * 60 * 1000) / 1000
+  // Get emails from last 1 day
+  const oneDayAgo = Math.floor(
+    (Date.now() - 1 * 24 * 60 * 60 * 1000) / 1000
   );
-  const query = `after:${ninetyDaysAgo}`;
+  const query = `after:${oneDayAgo}`;
 
   let messagesImported = 0;
   const allEmails = new Set<string>();
