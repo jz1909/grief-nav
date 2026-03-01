@@ -1,5 +1,5 @@
 import rake from "rake-js";
-import type { PrismaClient } from "@/lib/generated/prisma/client";
+import type { PrismaClient } from "../generated/prisma/client";
 import type { Chunk } from "./types";
 
 const TARGET_TOKENS = 500;

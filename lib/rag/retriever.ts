@@ -1,5 +1,5 @@
 import rake from "rake-js";
-import type { PrismaClient } from "@/lib/generated/prisma/client";
+import type { PrismaClient } from "../generated/prisma/client";
 import type { RetrievalResult, StoredChunk } from "./types";
 
 const DEFAULT_TOP_K = 5;
